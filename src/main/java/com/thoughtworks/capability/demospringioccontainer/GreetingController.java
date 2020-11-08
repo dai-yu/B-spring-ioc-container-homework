@@ -4,19 +4,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+import java.util.function.Function;
+
+
 public class GreetingController {
 
-    private final GreetingService greetingService;
-
     @Autowired
-    public GreetingController(GreetingService greetingService) {
-        this.greetingService = greetingService;
+    private Function<String, GreetingService> beanFactory;
+
+    public GreetingController() {
+        System.out.println("Singleton instance created");
     }
 
     @GetMapping("/greet")
     public String greet() {
-        return greetingService.sayHi();
+        return beanFactory.apply(null).sayHi();
     }
 
 }
